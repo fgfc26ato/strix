@@ -1,0 +1,18 @@
+name: Build Docker Image Tar
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull and Save Image
+        run: |
+          docker pull ghcr.io/usestrix/strix-sandbox:0.1.13
+          docker save ghcr.io/usestrix/strix-sandbox:0.1.13 | gzip > strix-sandbox-0.1.13.tar.gz
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v0.1.13
+          files: strix-sandbox-0.1.13.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
