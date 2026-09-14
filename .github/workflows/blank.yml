@@ -8,11 +8,11 @@ jobs:
       - name: Pull and Save Image
         run: |
           docker pull ghcr.io/usestrix/strix-sandbox:0.1.13
-          docker save ghcr.io/usestrix/strix-sandbox:0.1.13 | gzip > strix-sandbox-0.1.13.tar.gz
+          docker save ghcr.io/usestrix/strix-sandbox:0.1.13 | gzip | split -b 1500M - strix-sandbox.tar.gz.part_
       - name: Upload to Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v0.1.13
-          files: strix-sandbox-0.1.13.tar.gz
+          files: strix-sandbox.tar.gz.part_*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
